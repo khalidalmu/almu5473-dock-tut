@@ -19,3 +19,20 @@ resource "google_compute_instance" "dock-tut" {
     }
   }
 }
+resource "google_compute_firewall" "default" {
+ name    = "dock-net"
+ network = "default"
+
+ allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "80", "8080", "1000-2000"]
+  }
+}
+
+  output "ip" {
+     value = "${google_compute_instance.dock-tut.network_interface.0.access_config.0.nat_ip}"
+  }
